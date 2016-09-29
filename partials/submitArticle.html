@@ -1,0 +1,17 @@
+<div class="form-group">
+   <input type="text" class="form-control" id="articleTitle" placeholder="Title" ng-model="submitartlcectrl.article.title">
+</div>
+<!--<div class="form-group">
+   <textarea class="form-control" id="articleText" placeholder="Article" ng-model="submitartlcectrl.article.text">
+   </textarea>
+</div>-->
+<wysiwyg textarea-id="articleText" 
+         textarea-class="form-control"  
+         textarea-height="250px" 
+         textarea-name="taArticleText" 
+         textarea-required 
+         ng-model="submitartlcectrl.article.text" 
+         enable-bootstrap-title="true"
+         style="padding-bottom: 5px">
+</wysiwyg>
+<button type="button" ng-click="submitartlcectrl.submitArticle()" class="btn btn-success">Submit</button>

@@ -1,0 +1,21 @@
+<div>
+   <h3>
+      {{homectrl.mainArticleLeft.articleTitle}}
+   </h3>
+   <div class="metaData">
+      <div class="meta-author">
+         <p class="meta-paragraph">
+            By {{homectrl.mainArticleLeft.articleAuthor}}
+         </p>
+      </div>
+      <div class="meta-time">
+         <p class="meta-paragraph">
+            <i class="fa fa-clock-o"></i>Updated {{homectrl.mainArticleLeft.articleDate | date: 'h:mm a, EEE LLLL d, yyyy'}}
+         </p>
+      </div>
+   </div>
+   <div>
+      <p class="lead" ng-bind-html="homectrl.mainArticleLeft.articleContent">
+      </p>
+   </div>
+</div>

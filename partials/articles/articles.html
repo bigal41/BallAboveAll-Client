@@ -1,0 +1,25 @@
+<div class="container" ng-repeat="article in homectrl.olderArticles" >
+  <div class="row">
+      <div>
+         <h3>
+            {{article.articleTitle}}
+         </h3>
+         <div class="metaData">
+            <div class="meta-author">
+               <p class="meta-paragraph">
+                  By {{article.articleAuthor}}
+               </p>
+            </div>
+            <div class="meta-time">
+               <p class="meta-paragraph">
+                  <i class="fa fa-clock-o"></i>Updated {{article.articleDate | date: 'h:mm a, EEE LLLL d, yyyy'}}
+               </p>
+            </div>
+         </div>
+         <div>
+            <p class="lead" ng-bind-html="article.articleContent">
+            </p>
+         </div>
+      </div>
+  </div>
+</div>

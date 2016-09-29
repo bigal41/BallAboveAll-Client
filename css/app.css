@@ -1,0 +1,86 @@
+/* Sticky footer styles
+-------------------------------------------------- */
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+body {
+  /* Margin bottom by footer height */
+  margin-bottom: 60px;
+}
+.footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  /* Set the fixed height of the footer here */
+  height: 60px;
+  background-color: #f5f5f5;
+}
+/* Custom page CSS
+-------------------------------------------------- */
+
+/* Not required for template or sticky footer method. */
+
+body > .container {
+  padding: 60px 15px 0;
+}
+.container .text-muted {
+  margin: 20px 0;
+}
+.footer > .container {
+  padding-right: 15px;
+  padding-left: 15px;
+}
+code {
+  font-size: 80%;
+}
+
+/**
+ * For nav bar
+ */
+
+#login-dp {
+  min-width: 250px;
+  padding:14px 14px 0;
+  overflow: hidden;
+  background-color: rgba(255, 255, 255, 1);
+}
+
+#login-dp .help-block {
+  font-size: 12px;
+}
+
+#login-dp .bottom {
+  background-color: rgba(255, 255, 255, 1);
+  border-top: 1px solid #ddd;
+  clear: both;
+  padding: 14px;
+}
+
+#login-dp .form-group {
+  margin-bottom: 10px;
+}
+
+#userName:hover {
+  color: red;
+}
+
+#mainArticleLeft, #mainArticleRight {
+  width: 49%;
+  border: 1px solid rgba(0,0,0,0.5);
+}
+
+#mainArticleLeft {
+  float: left;
+}
+
+#mainArticleRight {
+  float: right;
+}
+
+.metaData p {
+  padding: 0px;
+  margin: 0px;
+}
+
