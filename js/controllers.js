@@ -4,7 +4,8 @@ myApp.controller("HeaderCtrl", ['$scope', '$window', '$cookies', '$location', '$
     var self = this;
 
     self.showMenu = false;
-    self.allowedToSubmit = false;
+    self.verifiedUser = false;
+    self.administrator = false;
 
     if ($cookies.get("token")) {
 
@@ -14,7 +15,8 @@ myApp.controller("HeaderCtrl", ['$scope', '$window', '$cookies', '$location', '$
         $window.sessionStorage.setItem("user", JSON.stringify(data.user));
 
         self.name = JSON.parse($window.sessionStorage.getItem("user")).name;
-        self.allowedToSubmit = JSON.parse($window.sessionStorage.getItem("user")).submitArticleFlag;
+        self.verifiedUser = JSON.parse($window.sessionStorage.getItem("user")).verified;
+        self.administrator = JSON.parse($window.sessionStorage.getItem("user")).administrator;
       });
 
     }
@@ -29,17 +31,23 @@ myApp.controller("HeaderCtrl", ['$scope', '$window', '$cookies', '$location', '$
 
         UserAuthFactory.login(self.user.username, self.user.password).success(function (data) {
 
-          //Note we need to check if the login actually succeded
-          if (self.saveToken)
-            $cookies.put("token", data.token);
-          else
-            $window.sessionStorage.setItem("token", data.token);
+          if( data.success ) {
 
-          $window.sessionStorage.setItem("user", JSON.stringify(data.user));
+            //Note we need to check if the login actually succeded
+            if (self.saveToken)
+              $cookies.put("token", data.token);
+            else
+              $window.sessionStorage.setItem("token", data.token);
 
-          self.showMenu = data.success;
-          self.name = data.user.name;
-          self.allowedToSubmit = data.user.submitArticleFlag;
+            $window.sessionStorage.setItem("user", JSON.stringify(data.user));
+
+            self.showMenu = data.success;
+            self.name = data.user.name;
+            self.verifiedUser = data.user.verified;
+            self.administrator = data.user.administrator;
+          }
+
+          else { console.log('Unable to log in....') }
 
         }).error(function (status) {
           console.log('Unable to log in...' + status);
@@ -215,6 +223,15 @@ myApp.controller("SubmitArticleCtrl", ['$scope', '$window', '$location', '$cooki
       });
     }
   }
-])
+]);
+
+myApp.controller("AdminCtrl", ['$scope', '$window', '$location', '$cookies', 'AdminFactory',
+  function($scope, $window, $location, $cookies, AdminFactory) {
+     var self = this;
+
+     AdminCtrl.verifyUser( null );
+
+  }
+]);
 
 

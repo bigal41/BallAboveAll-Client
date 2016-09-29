@@ -1,4 +1,4 @@
-var myApp = angular.module('ngclient', ['ngRoute', 'ngCookies', 'ngSanitize', 'toaster', 'colorpicker.module', 'wysiwyg.module']);
+var myApp = angular.module('ballAboveAll', ['ngRoute', 'ngCookies', 'ngSanitize', 'toaster', 'colorpicker.module', 'wysiwyg.module']);
 
 myApp.config(function ($routeProvider) {
 
@@ -27,6 +27,10 @@ myApp.config(function ($routeProvider) {
       templateUrl: 'partials/reset.html',
       controller: 'ResetPasswordCtrl',
       controllerAs: 'resetctrl'
+    }).when('/admin',{
+      templateUrl: 'partials/admin.html',
+      controller: 'AdminCtrl',
+      controllerAs: 'adminctrl' 
     }).otherwise({
       redirectTo: '/'
     });
