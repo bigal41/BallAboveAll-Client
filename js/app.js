@@ -1,5 +1,12 @@
-var myApp = angular.module('ballAboveAll', ['ngRoute', 'ngCookies', 'ngSanitize', 'toaster', 'colorpicker.module', 'wysiwyg.module']);
-
+var myApp = angular.module('ballAboveAll', ['ngRoute', 
+                                            'ngCookies', 
+                                            'ngSanitize', 
+                                            'toaster', 
+                                            'colorpicker.module', 
+                                            'wysiwyg.module', 
+                                            'ui.grid',
+                                            'ui.grid.selection']);
+                                            
 myApp.config(function ($routeProvider) {
 
   $routeProvider

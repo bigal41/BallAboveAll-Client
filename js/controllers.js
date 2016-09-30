@@ -227,9 +227,64 @@ myApp.controller("SubmitArticleCtrl", ['$scope', '$window', '$location', '$cooki
 
 myApp.controller("AdminCtrl", ['$scope', '$window', '$location', '$cookies', 'AdminFactory',
   function($scope, $window, $location, $cookies, AdminFactory) {
-     var self = this;
+    var self = this,
+        currSelectedUser;
 
-     AdminCtrl.verifyUser( null );
+    //Init Grid Options
+    self.gridOptions = {
+      enableRowSelection: true,
+      enableRowHeaderSelection: false,
+      multiSelect: false
+    };
+ 
+    self.gridOptions.columnDefs = [
+      { name: 'id' },
+      { name: 'name'},
+      { name: 'email' }
+    ];
+
+    self.gridOptions.data = [
+      {
+        "id": "001",
+        "name": "Alex Clark",
+        "email": "test1@test.com"
+      },
+      {
+        "id": "002",
+        "name": "Bob Smith",
+        "email": "test2@test.com"
+      },
+      {
+        "id": "003",
+        "name": "John Miller",
+        "email": "test3@test.com"
+      }
+    ];
+
+    self.gridOptions.onRegisterApi = function(gridApi){
+      //set gridApi on scope
+      self.gridApi = gridApi;
+      gridApi.selection.on.rowSelectionChanged($scope,function(row){
+        currSelectedUser = row.entity;
+      });
+    };
+
+    //Button Listener
+    self.verifyUser = function( ) {
+      var idx = 0;
+
+      AdminFactory.verifyUser( currSelectedUser );
+
+      //On success
+      for( ; idx <= self.gridOptions.data.length; idx++ )
+      {
+        if( self.gridOptions.data[idx].email === currSelectedUser.email ) {
+          self.gridOptions.data.splice(idx,1);
+          break;
+        }
+      }
+
+    }
 
   }
 ]);

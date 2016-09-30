@@ -63,7 +63,7 @@ myApp.factory('AdminFactory', function( $http, $cookies ){
 
     verifyUser : function( user ) {
 
-       console.log('Hello World');
+       console.log('Hello ' + user.name );
 
     }
 
