@@ -18,7 +18,7 @@ myApp.factory('UserAuthFactory', function( $window, $location, $cookies, $http )
             }
         }
 
-         return $http.get( apiAddress + "/getUser",config);
+         return $http.get( apiAddress + "/user",config);
       },
 
       register: function(user) {
@@ -52,7 +52,7 @@ myApp.factory('ArticleFactory', function( $http, $cookies ) {
 
         getArticles: function( article ) {
 
-            return $http.get(apiAddress + "/getArticles");
+            return $http.get(apiAddress + "/articles");
 
         }
     }
@@ -61,9 +61,18 @@ myApp.factory('ArticleFactory', function( $http, $cookies ) {
 myApp.factory('AdminFactory', function( $http, $cookies ){
   return {
 
-    verifyUser : function( user ) {
+    verifyUser : function( user ) { 
 
-       console.log('Hello ' + user.name );
+       var config = {
+            headers : {
+               'Authorization': $cookies.get('token'),
+               'Content-Type' : 'application/json'
+            }
+         }
+
+       //Should we send the user that is verifying the user? That way we can track the admin who
+       //did the verifiction and make sure they are an admin.
+       return $http.post(apiAddress + "/verifyUser", { user: user }, config );
 
     }
 
