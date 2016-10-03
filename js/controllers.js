@@ -140,7 +140,7 @@ myApp.controller("ProfileCtrl", ['$scope', '$window', '$location', '$cookies',
   function ($scope, $window, $location, $cookies) {
     var self = this;
 
-    if ( !$cookies.get('token') || !$window.sessionStorage.getItem('token') ) $location.path("/");
+    if ( ! $cookies.get('token') && ! $window.sessionStorage.getItem('token') ) $location.path("/");
 
 
     self.test = 'This is a profile page';
@@ -208,7 +208,7 @@ myApp.controller("SubmitArticleCtrl", ['$scope', '$window', '$location', '$cooki
 
     var submitArticleFlag = JSON.parse($window.sessionStorage.getItem("user")).submitArticleFlag;
 
-    if ( ( ! $cookies.get('token')  ||  ! $window.sessionStorage.getItem("token" ) ) || ! submitArticleFlag ) $location.path("/");
+    if ( ( ! $cookies.get('token')  && ! $window.sessionStorage.getItem("token" ) ) && ! submitArticleFlag ) $location.path("/");
 
     self.submitArticle = function () {
 
