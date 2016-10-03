@@ -10,11 +10,11 @@ myApp.factory('UserAuthFactory', function( $window, $location, $cookies, $http )
          return $http.post( apiAddress + "/login",{email: username, password: password});
       },
 
-      getUser: function(){
+      getUser: function( token ){
 
          var config = {
             headers : {
-                'Authorization': $cookies.get('token')
+                'Authorization': token
             }
         }
 
@@ -38,11 +38,11 @@ myApp.factory('UserAuthFactory', function( $window, $location, $cookies, $http )
 myApp.factory('ArticleFactory', function( $http, $cookies ) {
 
     return {
-        submitArticle: function( article ) {
+        submitArticle: function( article, token ) {
 
             var config = {
                 headers : {
-                    'Authorization': $cookies.get('token'),
+                    'Authorization': token,
                     'Content-Type' : 'application/json'
                 }
             }

@@ -7,9 +7,9 @@ myApp.controller("HeaderCtrl", ['$scope', '$window', '$cookies', '$location', '$
     self.verifiedUser = false;
     self.administrator = false;
 
-    if ($cookies.get("token")) {
+    if ($cookies.get("token") || $window.sessionStorage.get("token" )) {
 
-      UserAuthFactory.getUser().success(function (data) {
+      UserAuthFactory.getUser( $cookies.get('token') != null ? $cookies.get('token') : $window.sessionStorage.get("token" ) ).success(function (data) {
         self.showMenu = true;
 
         $window.sessionStorage.setItem("user", JSON.stringify(data.user));
@@ -136,11 +136,11 @@ myApp.controller("HomeCtrl", ['$scope', '$sce', '$location', 'ArticleFactory',
   }
 ]);
 
-myApp.controller("ProfileCtrl", ['$scope', '$location', '$cookies',
-  function ($scope, $location, $cookies) {
+myApp.controller("ProfileCtrl", ['$scope', '$window', '$location', '$cookies',
+  function ($scope, $window, $location, $cookies) {
     var self = this;
 
-    if (!$cookies.get('token')) $location.path("/");
+    if ( !$cookies.get('token') || !$window.sessionStorage.get('token') ) $location.path("/");
 
 
     self.test = 'This is a profile page';
@@ -208,14 +208,14 @@ myApp.controller("SubmitArticleCtrl", ['$scope', '$window', '$location', '$cooki
 
     var submitArticleFlag = JSON.parse($window.sessionStorage.getItem("user")).submitArticleFlag;
 
-    if (! $cookies.get('token') || ! submitArticleFlag ) $location.path("/");
+    if ( ( ! $cookies.get('token')  ||  ! $window.sessionStorage.get("token" ) ) || ! submitArticleFlag ) $location.path("/");
 
     self.submitArticle = function () {
 
       self.article.author = JSON.parse($window.sessionStorage.getItem("user")).name;
       self.article.updateDate = new Date();
 
-      ArticleFactory.submitArticle(self.article).success(function (data) {
+      ArticleFactory.submitArticle(self.article,  $cookies.get('token') != null ? $cookies.get('token') : $window.sessionStorage.get("token" ) ).success(function (data) {
         if (data.success)
           $location.path('/');
         else
