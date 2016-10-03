@@ -98,3 +98,12 @@ code {
   padding: 7.5px;
   margin-left: 45%;
 }
+
+/**
+ * Profile Page
+ */
+
+.verify-star { 
+    color: red;
+    font-size:.5em
+}

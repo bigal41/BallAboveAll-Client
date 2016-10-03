@@ -4,7 +4,11 @@
          <img src="" alt="Profile Pic" class="profile-pic">
       </div>
       <div class="col-md-8">
-            <h1>Test User</h1>
+            <h1>Test User
+               <sup class="verify-star">
+                  <i class="fa" ng-class="{'fa-star-o': !profilectrl.verified, 'fa-star': profilectrl.verified}"></i>
+               </sup>
+            </h1>
             <p> This is a test user</p>
       </div>
    </div>

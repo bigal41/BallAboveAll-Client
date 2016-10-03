@@ -145,6 +145,9 @@ myApp.controller("ProfileCtrl", ['$scope', '$window', '$location', '$cookies',
 
     if ( ! $cookies.get('token') && ! $window.sessionStorage.getItem('token') ) $location.path("/");
 
+    self.user = JSON.parse( $window.sessionStorage.getItem('user') );   
+    self.verified = self.user.verified;
+
 
     self.test = 'This is a profile page';
 
