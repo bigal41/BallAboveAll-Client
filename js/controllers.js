@@ -100,21 +100,24 @@ myApp.controller("HomeCtrl", ['$scope', '$sce', '$location', 'ArticleFactory',
         //We are sorting the articles on the server so when we receive them
         // index 0 will always be the newest.
 
-        self.mainArticleLeft = {
-          articleTitle: data.articles[0].title,
-          articleAuthor: data.articles[0].author,
-          articleDate: data.articles[0].updateDate,
-          articleContent: $sce.trustAsHtml( data.articles[0].text.substring(0, 300 ).trim( ) + "..." )
-        };
+        if( data.articles.length > 0 ) {
 
-        self.mainArticleRight = {
-          articleTitle: data.articles[1].title,
-          articleAuthor: data.articles[1].author,
-          articleDate: data.articles[1].updateDate,
-          articleContent: $sce.trustAsHtml( data.articles[1].text.substring(0, 300 ).trim( ) + "..." )
-        };
+            self.mainArticleLeft = {
+               articleTitle: data.articles[0].title,
+               articleAuthor: data.articles[0].author,
+               articleDate: data.articles[0].updateDate,
+               articleContent: $sce.trustAsHtml( data.articles[0].text.substring(0, 300 ).trim( ) + "..." )
+            };
 
-        data.articles.splice( 0, 2 );
+            self.mainArticleRight = {
+               articleTitle: data.articles[1].title,
+               articleAuthor: data.articles[1].author,
+               articleDate: data.articles[1].updateDate,
+               articleContent: $sce.trustAsHtml( data.articles[1].text.substring(0, 300 ).trim( ) + "..." )
+            };
+
+            data.articles.splice( 0, 2 );
+         }
 
 
         for( var i = 0; i < data.articles.length; i++ )
