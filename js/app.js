@@ -6,8 +6,8 @@ var myApp = angular.module('ballAboveAll', ['ngRoute',
                                             'wysiwyg.module', 
                                             'ui.grid',
                                             'ui.grid.selection']);
-                                            
-myApp.config(function ($routeProvider,  $locationProvider) {
+
+myApp.config(function ($routeProvider) {
 
   $routeProvider
     .when('/', {
@@ -41,7 +41,4 @@ myApp.config(function ($routeProvider,  $locationProvider) {
     }).otherwise({
       redirectTo: '/'
     });
-
-    $locationProvider.html5Mode(true);
-
 });

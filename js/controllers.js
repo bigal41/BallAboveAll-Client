@@ -238,28 +238,14 @@ myApp.controller("AdminCtrl", ['$scope', '$window', '$location', '$cookies', 'Ad
     };
  
     self.gridOptions.columnDefs = [
-      { name: 'id' },
+      { name: '_id', displayName: 'ID' },
       { name: 'name'},
       { name: 'email' }
     ];
 
-    self.gridOptions.data = [
-      {
-        "id": "001",
-        "name": "Alex Clark",
-        "email": "test1@test.com"
-      },
-      {
-        "id": "002",
-        "name": "Bob Smith",
-        "email": "test2@test.com"
-      },
-      {
-        "id": "003",
-        "name": "John Miller",
-        "email": "test3@test.com"
-      }
-    ];
+    AdminFactory.pendingVerification( ).success( function(data) {
+      self.gridOptions.data = data.users;
+    });
 
     self.gridOptions.onRegisterApi = function(gridApi){
       //set gridApi on scope

@@ -1,5 +1,5 @@
 //B411Ab0v3A11
-var apiAddress = "http://ballaboveall.ralexclark.ca:8080/api";
+var apiAddress = "http://localhost:8080/api";
 
 myApp.factory('UserAuthFactory', function( $window, $location, $cookies, $http ) {
    
@@ -18,7 +18,7 @@ myApp.factory('UserAuthFactory', function( $window, $location, $cookies, $http )
             }
         }
 
-         return $http.get( apiAddress + "/user",config);
+         return $http.get( apiAddress + "/getUser",config);
       },
 
       register: function(user) {
@@ -52,7 +52,7 @@ myApp.factory('ArticleFactory', function( $http, $cookies ) {
 
         getArticles: function( article ) {
 
-            return $http.get(apiAddress + "/articles");
+            return $http.get(apiAddress + "/getArticles");
 
         }
     }
@@ -60,6 +60,12 @@ myApp.factory('ArticleFactory', function( $http, $cookies ) {
 
 myApp.factory('AdminFactory', function( $http, $cookies ){
   return {
+
+    pendingVerification : function( ) {
+
+        return $http.get( apiAddress + "/pendingVerification" );
+
+    },
 
     verifyUser : function( user ) { 
 
