@@ -18,7 +18,7 @@ myApp.factory('UserAuthFactory', function( $window, $location, $cookies, $http )
             }
         }
 
-         return $http.get( apiAddress + "/getUser",config);
+         return $http.get( apiAddress + "/user",config);
       },
 
       register: function(user) {
@@ -52,7 +52,7 @@ myApp.factory('ArticleFactory', function( $http, $cookies ) {
 
         getArticles: function( article ) {
 
-            return $http.get(apiAddress + "/getArticles");
+            return $http.get(apiAddress + "/articles");
 
         }
     }
