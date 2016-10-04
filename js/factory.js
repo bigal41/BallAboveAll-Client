@@ -7,7 +7,7 @@ myApp.factory('UserAuthFactory', function( $window, $location, $cookies, $http )
    
    return {
       login: function(username, password){
-         return $http.post( apiAddress + "/login",{email: username, password: password});
+         return $http.post( apiAddress + "/login",{username: username, password: password});
       },
 
       getUser: function( token ){
@@ -38,7 +38,7 @@ myApp.factory('UserAuthFactory', function( $window, $location, $cookies, $http )
 myApp.factory('ArticleFactory', function( $http, $cookies ) {
 
     return {
-        submitArticle: function( article, token ) {
+        submitArticle: function( article, author, token ) {
 
             var config = {
                 headers : {
@@ -47,13 +47,17 @@ myApp.factory('ArticleFactory', function( $http, $cookies ) {
                 }
             }
 
-            return $http.post( apiAddress + "/submitArticle", { article: article }, config );
+            return $http.post( apiAddress + "/submitArticle", { article: article, user: author }, config );
         },
 
         getArticles: function( article ) {
 
             return $http.get(apiAddress + "/articles");
 
+        },
+
+        getArticlesByUser: function( username ) {
+            return $http.post( apiAddress + "/articlesByUser", { username: username } );
         }
     }
 });
@@ -67,11 +71,11 @@ myApp.factory('AdminFactory', function( $http, $cookies ){
 
     },
 
-    verifyUser : function( user ) { 
+    verifyUser : function( user, token ) { 
 
        var config = {
             headers : {
-               'Authorization': $cookies.get('token'),
+               'Authorization': token,
                'Content-Type' : 'application/json'
             }
          }
@@ -83,4 +87,14 @@ myApp.factory('AdminFactory', function( $http, $cookies ){
     }
 
   }
+});
+
+myApp.factory('UserFactory', function( $http, $cookies ){
+    return {
+
+        getProfileByUser : function( username ) {
+            return $http.post( apiAddress + "/profileByUser", { username: username } );
+        }
+
+    }
 });

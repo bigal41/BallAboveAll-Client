@@ -4,9 +4,9 @@
          <img src="" alt="Profile Pic" class="profile-pic">
       </div>
       <div class="col-md-8">
-            <h1>Test User
+            <h1>{{profilectrl.user.name}}
                <sup class="verify-star">
-                  <i class="fa" ng-class="{'fa-star-o': !profilectrl.verified, 'fa-star': profilectrl.verified}"></i>
+                  <i class="fa" ng-class="{'fa-star-o': !profilectrl.user.verified, 'fa-star': profilectrl.user.verified}"></i>
                </sup>
             </h1>
             <p> This is a test user</p>
@@ -20,27 +20,27 @@
       </div>
    </div>
 </div>
-<div class="container" >
+<div class="container" ng-repeat="article in profilectrl.articles">
    <div class="row">
       <div class="col-md-12">
          <div class="media">
             <div class="media-body">
                <h4>
-                  Test Article
+                  {{article.articleTitle}}
                </h4>
                <div class="metaData">
                   <div class="meta-author">
                      <p class="meta-paragraph">
-                        By Test User
+                        By {{article.articleAuthor}}
                      </p>
                   </div>
                   <div class="meta-time">
                      <p class="meta-paragraph">
-                        <i class="fa fa-clock-o"></i>
+                        <i class="fa fa-clock-o"></i>Updated {{article.articleDate | date: 'h:mm a, EEE LLLL d, yyyy'}}
                      </p>
                   </div>
                </div>
-               <p class="lead">Test Test</p>
+               <p class="lead" ng-bind-html="article.articleContent"></p>
             </div>
          </div>
       </div>

@@ -67,6 +67,18 @@ code {
   color: red;
 }
 
+.header-left {
+  margin-left: 10%;
+}
+
+.full-width {
+  width: 100%
+}
+
+/**
+ * Article Page
+ */
+
 #mainArticleLeft, #mainArticleRight {
   width: 49%;
   border: 1px solid rgba(0,0,0,0.5);

@@ -1,3 +1,6 @@
+var failedPathChange = false,
+    msg = '';
+
 myApp.controller("HeaderCtrl", ['$scope', '$window', '$cookies', '$location', '$timeout', 'UserAuthFactory',
   function ($scope, $window, $cookies, $location, $timeout, UserAuthFactory) {
 
@@ -17,6 +20,7 @@ myApp.controller("HeaderCtrl", ['$scope', '$window', '$cookies', '$location', '$
         self.name = JSON.parse($window.sessionStorage.getItem("user")).name;
         self.verifiedUser = JSON.parse($window.sessionStorage.getItem("user")).verified;
         self.administrator = JSON.parse($window.sessionStorage.getItem("user")).administrator;
+        self.username = JSON.parse($window.sessionStorage.getItem("user")).username;
       });
 
     }
@@ -60,9 +64,10 @@ myApp.controller("HeaderCtrl", ['$scope', '$window', '$cookies', '$location', '$
       self.name = "";
 
       $cookies.remove("token");
+      $window.sessionStorage.removeItem("token");
 
       if ($window.sessionStorage.getItem("user"))
-        $window.sessionStorage.removeItem("user");
+          $window.sessionStorage.removeItem("user");
 
       //Later we need to check if the user should leave the page they are on.
 
@@ -87,8 +92,8 @@ myApp.controller("RegistrationCtrl", ['$scope', '$location', 'UserAuthFactory',
   }
 ]);
 
-myApp.controller("HomeCtrl", ['$scope', '$sce', '$location', 'ArticleFactory',
-  function ($scope, $sce, $location, ArticleFactory) {
+myApp.controller("HomeCtrl", ['$scope', '$sce', '$location', 'toaster', 'ArticleFactory',
+  function ($scope, $sce, $location, toaster, ArticleFactory) {
 
     var self = this;
 
@@ -135,21 +140,37 @@ myApp.controller("HomeCtrl", ['$scope', '$sce', '$location', 'ArticleFactory',
       }
     });
 
+    toaster.pop('error','msg');
 
   }
 ]);
 
-myApp.controller("ProfileCtrl", ['$scope', '$window', '$location', '$cookies',
-  function ($scope, $window, $location, $cookies) {
+myApp.controller("ProfileCtrl", ['$scope', '$window', '$location', '$cookies', '$routeParams', '$sce', 'ArticleFactory', 'UserFactory',
+  function ($scope, $window, $location, $cookies, $routeParams, $sce, ArticleFactory, UserFactory) {
     var self = this;
 
-    if ( ! $cookies.get('token') && ! $window.sessionStorage.getItem('token') ) $location.path("/");
+    self.username = $routeParams.username;
+    self.articles = [];
 
-    self.user = JSON.parse( $window.sessionStorage.getItem('user') );   
-    self.verified = self.user.verified;
+    ArticleFactory.getArticlesByUser( self.username ).success(function (data) {
+      if (data.success) {
+      
+        for( var i = 0; i < data.articles.length; i++ )
+        {
+          self.articles.push({
+            articleTitle: data.articles[i].title,
+            articleAuthor: data.articles[i].author,
+            articleDate: data.articles[i].updateDate,
+            articleContent: $sce.trustAsHtml( data.articles[i].text.substring(0, 300 ).trim( ) + "..." )
+          });
+        }
 
+      }
+    });
 
-    self.test = 'This is a profile page';
+    UserFactory.getProfileByUser( self.username).success( function(data) {
+      if( data.success ) self.user = data.user;
+    });
 
   }
 ]);
@@ -218,10 +239,10 @@ myApp.controller("SubmitArticleCtrl", ['$scope', '$window', '$location', '$cooki
 
     self.submitArticle = function () {
 
-      self.article.author = JSON.parse($window.sessionStorage.getItem("user")).name;
+      self.author = JSON.parse($window.sessionStorage.getItem("user"));
       self.article.updateDate = new Date();
 
-      ArticleFactory.submitArticle(self.article,  $cookies.get('token') != null ? $cookies.get('token') : $window.sessionStorage.getItem("token" ) ).success(function (data) {
+      ArticleFactory.submitArticle(self.article, self.author, $cookies.get('token') != null ? $cookies.get('token') : $window.sessionStorage.getItem("token" ) ).success(function (data) {
         if (data.success)
           $location.path('/');
         else
@@ -236,48 +257,57 @@ myApp.controller("AdminCtrl", ['$scope', '$window', '$location', '$cookies', 'Ad
     var self = this,
         currSelectedUser;
 
-    //Init Grid Options
-    self.gridOptions = {
-      enableRowSelection: true,
-      enableRowHeaderSelection: false,
-      multiSelect: false
-    };
- 
-    self.gridOptions.columnDefs = [
-      { name: '_id', displayName: 'ID' },
-      { name: 'name'},
-      { name: 'email' }
-    ];
+    if( !$window.sessionStorage.getItem('user') || ! JSON.parse( $window.sessionStorage.getItem('user') ).administrator ) {
 
-    AdminFactory.pendingVerification( ).success( function(data) {
-      self.gridOptions.data = data.users;
-    });
-
-    self.gridOptions.onRegisterApi = function(gridApi){
-      //set gridApi on scope
-      self.gridApi = gridApi;
-      gridApi.selection.on.rowSelectionChanged($scope,function(row){
-        currSelectedUser = row.entity;
-      });
-    };
-
-    //Button Listener
-    self.verifyUser = function( ) {
-      var idx = 0;
-
-      AdminFactory.verifyUser( currSelectedUser );
-
-      //On success
-      for( ; idx <= self.gridOptions.data.length; idx++ )
-      {
-        if( self.gridOptions.data[idx].email === currSelectedUser.email ) {
-          self.gridOptions.data.splice(idx,1);
-          break;
-        }
-      }
-
+      failedPathChange = true;
+      msg = 'You are not an administrator. Please contact the admin to get security rights.';
+      
+      //Change Path
+      $location.path('/');
     }
+    else {
+      //Init Grid Options
+      self.gridOptions = {
+        enableRowSelection: true,
+        enableRowHeaderSelection: false,
+        multiSelect: false
+      };
+ 
+      self.gridOptions.columnDefs = [
+        { name: '_id', displayName: 'ID' },
+        { name: 'name'},
+        { name: 'email' }
+      ];
 
+      AdminFactory.pendingVerification( ).success( function(data) {
+        self.gridOptions.data = data.users;
+      });
+
+      self.gridOptions.onRegisterApi = function(gridApi){
+        //set gridApi on scope
+        self.gridApi = gridApi;
+        gridApi.selection.on.rowSelectionChanged($scope,function(row){
+          currSelectedUser = row.entity;
+        });
+      };
+
+      //Button Listener
+      self.verifyUser = function( ) {
+        var idx = 0;
+
+        AdminFactory.verifyUser( currSelectedUser, $cookies.get('token') != null ? $cookies.get('token') : $window.sessionStorage.getItem("token" ) );
+
+        //On success
+        for( ; idx <= self.gridOptions.data.length; idx++ )
+        {
+          if( self.gridOptions.data[idx].email === currSelectedUser.email ) {
+            self.gridOptions.data.splice(idx,1);
+            break;
+          }
+        }
+
+      }
+    }
   }
 ]);
 

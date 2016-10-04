@@ -18,7 +18,7 @@ myApp.config(function ($routeProvider) {
       templateUrl: 'partials/registration.html',
       controller: 'RegistrationCtrl',
       controllerAs: 'registrationctrl'
-    }).when('/profile', {
+    }).when('/profile/:username', {
       templateUrl: 'partials/profile.html',
       controller: 'ProfileCtrl',
       controllerAs: 'profilectrl'
