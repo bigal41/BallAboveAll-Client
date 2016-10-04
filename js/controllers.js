@@ -49,6 +49,7 @@ myApp.controller("HeaderCtrl", ['$scope', '$window', '$cookies', '$location', '$
             self.name = data.user.name;
             self.verifiedUser = data.user.verified;
             self.administrator = data.user.administrator;
+            self.username = JSON.parse($window.sessionStorage.getItem("user")).username;
           }
 
           else { console.log('Unable to log in....') }
