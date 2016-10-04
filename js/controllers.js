@@ -109,6 +109,7 @@ myApp.controller("HomeCtrl", ['$scope', '$sce', '$location', 'toaster', 'Article
         if( data.articles.length > 0 ) {
 
             self.mainArticleLeft = {
+               articleID: data.articles[0]._id,
                articleTitle: data.articles[0].title,
                articleAuthor: data.articles[0].author,
                articleDate: data.articles[0].updateDate,
@@ -229,9 +230,17 @@ myApp.controller("ResetPasswordCtrl", ['$scope', '$location', '$routeParams', '$
   }
 ]);
 
-myApp.controller("ArticleCtrl", ['$scope', '$location',
-  function ($scope, $location) {
+myApp.controller("ArticleCtrl", ['$scope', '$location', '$routeParams', 'ArticleFactory',
+  function ($scope, $location, $routeParams, ArticleFactory) {
     var self = this;
+
+    self.articleID = $routeParams.id;
+
+    ArticleFactory.getArticleByID( self.articleID ).success(function(data) {
+
+      if(data.success) { self.article = data.article; }
+
+    });
   }
 ]);
 

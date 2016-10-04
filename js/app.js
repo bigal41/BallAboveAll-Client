@@ -38,6 +38,10 @@ myApp.config(function ($routeProvider) {
       templateUrl: 'partials/admin.html',
       controller: 'AdminCtrl',
       controllerAs: 'adminctrl' 
+    }).when('/article/:id',{
+      templateUrl: 'partials/articles/fullarticle.html',
+      controller: 'ArticleCtrl',
+      controllerAs: 'articlectrl'
     }).otherwise({
       redirectTo: '/'
     });

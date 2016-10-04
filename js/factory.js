@@ -1,5 +1,5 @@
 //B411Ab0v3A11
-var apiAddress = "http://ballaboveall.ralexclark.ca:8080/api";
+var apiAddress = "http://ballaboveall.ralexclark:8080/api";
 
 myApp.factory('UserAuthFactory', function( $window, $location, $cookies, $http ) {
    
@@ -58,7 +58,12 @@ myApp.factory('ArticleFactory', function( $http, $cookies ) {
 
         getArticlesByUser: function( username ) {
             return $http.post( apiAddress + "/articlesByUser", { username: username } );
+        },
+
+        getArticleByID: function( id ) {
+            return $http.post( apiAddress + "/articleByID", {id: id });
         }
+
     }
 });
 
