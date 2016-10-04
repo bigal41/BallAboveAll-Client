@@ -112,16 +112,20 @@ myApp.controller("HomeCtrl", ['$scope', '$sce', '$location', 'toaster', 'Article
                articleTitle: data.articles[0].title,
                articleAuthor: data.articles[0].author,
                articleDate: data.articles[0].updateDate,
-               articleContent: $sce.trustAsHtml( data.articles[0].text.substring(0, 300 ).trim( ) + "..." )
+               articleContent: $sce.trustAsHtml( data.articles[0].text.substring(0, 300 ).trim( ) + "..." ),
+               authorUsername: data.articles[0].authorUsername
             };
-
-            self.mainArticleRight = {
-               articleTitle: data.articles[1].title,
-               articleAuthor: data.articles[1].author,
-               articleDate: data.articles[1].updateDate,
-               articleContent: $sce.trustAsHtml( data.articles[1].text.substring(0, 300 ).trim( ) + "..." )
-            };
-
+            
+            if( data.articles.length > 1 ) {
+              
+              self.mainArticleRight = {
+                articleTitle: data.articles[1].title,
+                articleAuthor: data.articles[1].author,
+                articleDate: data.articles[1].updateDate,
+                articleContent: $sce.trustAsHtml( data.articles[1].text.substring(0, 300 ).trim( ) + "..." ),
+                authorUsername: data.articles[1].authorUsername
+              };
+            }
             data.articles.splice( 0, 2 );
          }
 
@@ -132,7 +136,8 @@ myApp.controller("HomeCtrl", ['$scope', '$sce', '$location', 'toaster', 'Article
             articleTitle: data.articles[i].title,
             articleAuthor: data.articles[i].author,
             articleDate: data.articles[i].updateDate,
-            articleContent: $sce.trustAsHtml( data.articles[i].text.substring(0, 300 ).trim( ) + "..." )
+            articleContent: $sce.trustAsHtml( data.articles[i].text.substring(0, 300 ).trim( ) + "..." ),
+            authorUsername: data.article[i].authorUsername
           });
         }
 
