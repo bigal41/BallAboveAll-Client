@@ -116,9 +116,9 @@ myApp.controller("HomeCtrl", ['$scope', '$sce', '$location', 'toaster', 'Article
                articleContent: $sce.trustAsHtml( data.articles[0].text.substring(0, 300 ).trim( ) + "..." ),
                authorUsername: data.articles[0].authorUsername
             };
-            
+
             if( data.articles.length > 1 ) {
-              
+
               self.mainArticleRight = {
                 articleTitle: data.articles[1].title,
                 articleAuthor: data.articles[1].author,
@@ -153,33 +153,39 @@ myApp.controller("HomeCtrl", ['$scope', '$sce', '$location', 'toaster', 'Article
 ]);
 
 myApp.controller("ProfileCtrl", ['$scope', '$window', '$location', '$cookies', '$routeParams', '$sce', 'ArticleFactory', 'UserFactory',
-  function ($scope, $window, $location, $cookies, $routeParams, $sce, ArticleFactory, UserFactory) {
-    var self = this;
+   function ($scope, $window, $location, $cookies, $routeParams, $sce, ArticleFactory, UserFactory) {
+      var self = this;
 
-    self.username = $routeParams.username;
-    self.articles = [];
+      self.username = $routeParams.username;
+      self.articles = [];
+      self.hasTwitter = false;
 
-    ArticleFactory.getArticlesByUser( self.username ).success(function (data) {
-      if (data.success) {
-      
-        for( var i = 0; i < data.articles.length; i++ )
-        {
-          self.articles.push({
-            articleTitle: data.articles[i].title,
-            articleAuthor: data.articles[i].author,
-            articleDate: data.articles[i].updateDate,
-            articleContent: $sce.trustAsHtml( data.articles[i].text.substring(0, 300 ).trim( ) + "..." )
-          });
-        }
+      ArticleFactory.getArticlesByUser( self.username ).success(function (data) {
+         if (data.success)
+         {
+            for( var i = 0; i < data.articles.length; i++ )
+            {
+               self.articles.push({
+                  articleTitle: data.articles[i].title,
+                  articleAuthor: data.articles[i].author,
+                  articleDate: data.articles[i].updateDate,
+                  articleContent: $sce.trustAsHtml( data.articles[i].text.substring(0, 300 ).trim( ) + "..." )
+               });
+            }
 
-      }
-    });
+         }
+      });
 
-    UserFactory.getProfileByUser( self.username).success( function(data) {
-      if( data.success ) self.user = data.user;
-    });
-
-  }
+      UserFactory.getProfileByUser( self.username).success( function(data) {
+         if( data.success )
+         {
+            self.user = data.user;
+            //Hardcoded for Demo -- REMOVE LATER
+            self.user.twitterName = "RAlexClark";
+            self.hasTwitter = true;
+         }
+      });
+   }
 ]);
 
 myApp.controller("ForgetPasswordCtrl", ['$scope', '$location', 'toaster', 'UserAuthFactory',
@@ -276,7 +282,7 @@ myApp.controller("AdminCtrl", ['$scope', '$window', '$location', '$cookies', 'Ad
 
       failedPathChange = true;
       msg = 'You are not an administrator. Please contact the admin to get security rights.';
-      
+
       //Change Path
       $location.path('/');
     }
@@ -287,7 +293,7 @@ myApp.controller("AdminCtrl", ['$scope', '$window', '$location', '$cookies', 'Ad
         enableRowHeaderSelection: false,
         multiSelect: false
       };
- 
+
       self.gridOptions.columnDefs = [
         { name: '_id', displayName: 'ID' },
         { name: 'name'},
@@ -325,5 +331,3 @@ myApp.controller("AdminCtrl", ['$scope', '$window', '$location', '$cookies', 'Ad
     }
   }
 ]);
-
-

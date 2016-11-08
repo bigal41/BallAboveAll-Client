@@ -3,13 +3,19 @@
       <div class="col-md-4">
          <img src="" alt="Profile Pic" class="profile-pic">
       </div>
-      <div class="col-md-8">
+      <div class="col-md-4">
             <h1>{{profilectrl.user.name}}
                <sup class="verify-star">
                   <i class="fa" ng-class="{'fa-star-o': !profilectrl.user.verified, 'fa-star': profilectrl.user.verified}"></i>
                </sup>
             </h1>
             <p> This is a test user</p>
+      </div>
+      <div class="col-md-4" ng-show="profilectrl.hasTwitter">
+         <a class="twitter-timeline" data-width="400" data-height="200" ng-href="https://twitter.com/{{profilectrl.user.twitterName}}">
+            Tweets by {{profilectrl.user.twitterName}}
+         </a>
+         <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
       </div>
    </div>
    <div class="row">
