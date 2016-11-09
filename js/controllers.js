@@ -287,24 +287,44 @@ myApp.controller("AdminCtrl", ['$scope', '$window', '$location', '$cookies', 'Ad
       $location.path('/');
     }
     else {
-      //Init Grid Options
-      self.gridOptions = {
+      //Init Verify User Grid Options
+      self.usersGridOptions = {
         enableRowSelection: true,
         enableRowHeaderSelection: false,
         multiSelect: false
       };
 
-      self.gridOptions.columnDefs = [
+      self.usersGridOptions.columnDefs = [
         { name: '_id', displayName: 'ID' },
         { name: 'name'},
         { name: 'email' }
       ];
 
+      //Init Approve Article Grid Options
+      self.articleGridOptions = {
+        enableRowSelection: true,
+        enableRowHeaderSelection: false,
+        multiSelect: false
+      };
+
+      self.articleGridOptions.columnDefs = [
+        { name: '_id', displayName: 'ID' },
+        { name: 'title'},
+        { name: 'content' }
+      ];
+
+      //Get all the users pending verification
       AdminFactory.pendingVerification( ).success( function(data) {
-        self.gridOptions.data = data.users;
+        self.usersGridOptions.data = data.users;
       });
 
-      self.gridOptions.onRegisterApi = function(gridApi){
+      //Get all the articles that are pending approval
+      AdminFactory.pendingApproval( ).success( function(data) {
+         self.articleGridOptions.data = data.articles;
+      });
+
+      //We need to register the users grid
+      self.usersGridOptions.onRegisterApi = function(gridApi){
         //set gridApi on scope
         self.gridApi = gridApi;
         gridApi.selection.on.rowSelectionChanged($scope,function(row){
@@ -312,21 +332,44 @@ myApp.controller("AdminCtrl", ['$scope', '$window', '$location', '$cookies', 'Ad
         });
       };
 
+      //Now register the article grid
+      self.articleGridOptions.onRegisterApi = function(gridApi) {
+         self.gridApi= gridApi;
+         gridApi.selection.on.rowSelectionChanged($scope, function(row){
+            currSelectedArticle = row.entity;
+         })
+      };
+
       //Button Listener
       self.verifyUser = function( ) {
-        var idx = 0;
+         var idx = 0;
 
-        AdminFactory.verifyUser( currSelectedUser, $cookies.get('token') != null ? $cookies.get('token') : $window.sessionStorage.getItem("token" ) );
+         AdminFactory.verifyUser( currSelectedUser, $cookies.get('token') != null ? $cookies.get('token') : $window.sessionStorage.getItem("token" ) );
 
-        //On success
-        for( ; idx <= self.gridOptions.data.length; idx++ )
-        {
-          if( self.gridOptions.data[idx].email === currSelectedUser.email ) {
-            self.gridOptions.data.splice(idx,1);
-            break;
-          }
-        }
+         //On success
+         for( ; idx <= self.usersGridOptions.data.length; idx++ )
+         {
+            if( self.usersGridOptions.data[idx].email === currSelectedUser.email ) {
+               self.usersGridOptions.data.splice(idx,1);
+               break;
+            }
+         }
+      };
 
+      self.approveArticle = function( ) {
+         var idx = 0;
+
+         AdminFactory.approveArticle( currSelectedArticle, $cookies.get('token') != null ? $cookies.get('token') : $window.sessionStorage.getItem('token') );
+
+         //On success -- should be a true on success. We are being optimistic here and assuming that
+         //the following call to the API is going to succeed.
+         for( ; idx <= self.articleGridOptions.data.length; idx++ )
+         {
+            if( self.articleGridOptions.data[idx].id === currSelectedArticle.id ) {
+               self.articleGridOptions.data.splice(idx,1);
+               break;
+            }
+         }
       }
     }
   }

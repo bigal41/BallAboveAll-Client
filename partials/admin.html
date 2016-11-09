@@ -1,4 +1,9 @@
-<div id="usersGrid" ui-grid="adminctrl.gridOptions" ui-grid-selection class="grid"></div>
+<div id="usersGrid" ui-grid="adminctrl.usersGridOptions" ui-grid-selection class="grid"></div>
 <div class="verify-btn-container">
    <button class="btn btn-primary" ng-click="adminctrl.verifyUser()">Verify User</button>
+</div>
+
+<div id="articleGrid" ui-grid="adminctrl.articleGridOptions" ui-grid-selection class="grid"></div>
+<div class="verify-btn-container">
+   <button class="btn btn-primary" ng-click="adminctrl.approveArticle()">Approve Article</button>
 </div>

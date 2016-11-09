@@ -2,9 +2,9 @@
 var apiAddress = "http://ballaboveall.ralexclark.ca:8080/api";
 
 myApp.factory('UserAuthFactory', function( $window, $location, $cookies, $http ) {
-   
-   
-   
+
+
+
    return {
       login: function(username, password){
          return $http.post( apiAddress + "/login",{username: username, password: password});
@@ -68,30 +68,50 @@ myApp.factory('ArticleFactory', function( $http, $cookies ) {
 });
 
 myApp.factory('AdminFactory', function( $http, $cookies ){
-  return {
+   return {
 
-    pendingVerification : function( ) {
+      //User Admin - getting users needed verification and verifying users.
+      pendingVerification : function( ) {
 
-        return $http.get( apiAddress + "/pendingVerification" );
+         return $http.get( apiAddress + "/pendingVerification" );
 
-    },
+      },
 
-    verifyUser : function( user, token ) { 
+      verifyUser : function( user, token ) {
 
-       var config = {
+         var config = {
             headers : {
                'Authorization': token,
                'Content-Type' : 'application/json'
             }
          }
 
-       //Should we send the user that is verifying the user? That way we can track the admin who
-       //did the verifiction and make sure they are an admin.
-       return $http.post(apiAddress + "/verifyUser", { user: user }, config );
+         //NOTE: Should we send the user that is verifying the user? That way we can track the admin who
+         //did the verifiction and make sure they are an admin.
+         return $http.post(apiAddress + "/verifyUser", { user: user }, config );
 
-    }
+      },
 
-  }
+      //Article Admin - getting the articles that need to be approved and approve the articles
+      pendingApproval : function( ) {
+         return $http.get( apiAddress + "/pendingApproval");
+      },
+
+      approveArticle : function( article, token ) {
+         var config = {
+            headers: {
+               'Authorization': token,
+               'Content-Type' : 'application/json'
+            }
+         };
+
+         //NOTE: Should we send the user that is approving the article? That way we can track the admin who
+         //did the approval and make sure they are an admin.
+         return $http.post(apiAddress + '/approveArticle', { article, article }, config );
+
+      }
+
+   }
 });
 
 myApp.factory('UserFactory', function( $http, $cookies ){
