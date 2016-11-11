@@ -1,6 +1,6 @@
 //B411Ab0v3A11
-//var apiAddress = "http://ballaboveall.ralexclark.ca:8080/api";
-var apiAddress = "http://localhost:8080/api";
+var apiAddress = "http://ballaboveall.ralexclark.ca:8080/api";
+//var apiAddress = "http://localhost:8080/api";
 
 myApp.factory('UserAuthFactory', function( $window, $location, $cookies, $http ) {
 
