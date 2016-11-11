@@ -1,9 +1,9 @@
-var myApp = angular.module('ballAboveAll', ['ngRoute', 
-                                            'ngCookies', 
-                                            'ngSanitize', 
-                                            'toaster', 
-                                            'colorpicker.module', 
-                                            'wysiwyg.module', 
+var myApp = angular.module('ballAboveAll', ['ngRoute',
+                                            'ngCookies',
+                                            'ngSanitize',
+                                            'toaster',
+                                            'colorpicker.module',
+                                            'wysiwyg.module',
                                             'ui.grid',
                                             'ui.grid.selection']);
 
@@ -37,7 +37,7 @@ myApp.config(function ($routeProvider) {
     }).when('/admin',{
       templateUrl: 'partials/admin.html',
       controller: 'AdminCtrl',
-      controllerAs: 'adminctrl' 
+      controllerAs: 'adminctrl'
     }).when('/article/:id',{
       templateUrl: 'partials/articles/fullarticle.html',
       controller: 'ArticleCtrl',

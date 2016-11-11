@@ -9,13 +9,11 @@
                   <i class="fa" ng-class="{'fa-star-o': !profilectrl.user.verified, 'fa-star': profilectrl.user.verified}"></i>
                </sup>
             </h1>
+            <div id="followBtn"></div>
             <p> This is a test user</p>
       </div>
       <div class="col-md-4" ng-show="profilectrl.hasTwitter">
-         <a class="twitter-timeline" data-width="400" data-height="200" ng-href="https://twitter.com/{{profilectrl.user.twitterName}}">
-            Tweets by {{profilectrl.user.twitterName}}
-         </a>
-         <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+         <div id="twitTimeline"></div>
       </div>
    </div>
    <div class="row">
@@ -32,7 +30,7 @@
          <div class="media">
             <div class="media-body">
                <h4>
-                  {{article.articleTitle}}
+                  <a ng-href="{{article.articleURL}}"> {{article.articleTitle}}</a>
                </h4>
                <div class="metaData">
                   <div class="meta-author">

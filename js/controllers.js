@@ -169,10 +169,10 @@ myApp.controller("ProfileCtrl", ['$scope', '$window', '$location', '$cookies', '
                   articleTitle: data.articles[i].title,
                   articleAuthor: data.articles[i].author,
                   articleDate: data.articles[i].updateDate,
-                  articleContent: $sce.trustAsHtml( data.articles[i].text.substring(0, 300 ).trim( ) + "..." )
+                  articleContent: $sce.trustAsHtml( data.articles[i].text.substring(0, 300 ).trim( ) + "..." ),
+                  articleURL: '#/article/' + data.articles[i]._id
                });
             }
-
          }
       });
 
@@ -180,9 +180,35 @@ myApp.controller("ProfileCtrl", ['$scope', '$window', '$location', '$cookies', '
          if( data.success )
          {
             self.user = data.user;
-            //Hardcoded for Demo -- REMOVE LATER
-            self.user.twitterName = "RAlexClark";
+
+            //NOTE: Hardcoded for Demo -- REMOVE LATER
+            if( self.user.username == 'aclark' )
+              self.user.twitterName = 'RAlexClark';
+            else
+              self.user.twitterName = "ballAbove_All";
+
             self.hasTwitter = true;
+
+            //Add the Twitter follow Button
+            twttr.widgets.createFollowButton(
+              self.user.twitterName,
+              document.getElementById('followBtn')
+            );
+
+            //Create Twitter Timeline Widget
+            twttr.widgets.createTimeline(
+              {
+                sourceType: "profile",
+                screenName: self.user.twitterName
+          	   },
+               document.getElementById('twitTimeline'),
+               {
+                  chrome: 'nofooter',
+                  width: '400',
+            	    height: '300'
+                }
+            );
+
          }
       });
    }
@@ -245,6 +271,15 @@ myApp.controller("ArticleCtrl", ['$scope', '$location', '$routeParams', 'Article
     ArticleFactory.getArticleByID( self.articleID ).success(function(data) {
 
       if(data.success) { self.article = data.article; }
+
+      //Add the Twitter follow Button
+      twttr.widgets.createShareButton(
+        "http:\/\/ballaboveall.ralexclark.ca/#/article/" + self.articleID,
+        document.getElementById('shareBtn'),
+        {
+          text: self.article.title
+        }
+      );
 
     });
   }
