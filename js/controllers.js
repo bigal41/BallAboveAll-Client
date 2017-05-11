@@ -274,7 +274,7 @@ myApp.controller("ArticleCtrl", ['$scope', '$location', '$routeParams', 'Article
 
       //Add the Twitter follow Button
       twttr.widgets.createShareButton(
-        "http:\/\/ballaboveall.ralexclark.ca/#/article/" + self.articleID,
+        "https:\/\/ballaboveall.ralexclark.ca/#/article/" + self.articleID,
         document.getElementById('shareBtn'),
         {
           text: self.article.title
