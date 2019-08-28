@@ -12,7 +12,7 @@ myApp.controller("HeaderCtrl", ['$scope', '$window', '$cookies', '$location', '$
 
     if ($cookies.get("token") || $window.sessionStorage.getItem("token" )) {
 
-      UserAuthFactory.getUser( $cookies.get('token') != null ? $cookies.get('token') : $window.sessionStorage.getItem("token" ) ).success(function (data) {
+      UserAuthFactory.getUser( $cookies.get('token') != undefined ? $cookies.get('token') : $window.sessionStorage.getItem("token" ) ).success(function (data) {
         self.showMenu = true;
 
         $window.sessionStorage.setItem("user", JSON.stringify(data.user));
@@ -21,6 +21,8 @@ myApp.controller("HeaderCtrl", ['$scope', '$window', '$cookies', '$location', '$
         self.verifiedUser = JSON.parse($window.sessionStorage.getItem("user")).verified;
         self.administrator = JSON.parse($window.sessionStorage.getItem("user")).administrator;
         self.username = JSON.parse($window.sessionStorage.getItem("user")).username;
+      }).error(function(){
+          console.error('Username and/or Password does not match.')
       });
 
     }

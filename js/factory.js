@@ -108,7 +108,7 @@ myApp.factory('AdminFactory', function( $http, $cookies ){
 
          //NOTE: Should we send the user that is approving the article? That way we can track the admin who
          //did the approval and make sure they are an admin.
-         return $http.post(apiAddress + '/approveArticle', { article, article }, config );
+         return $http.post(apiAddress + '/approveArticle', { article: article }, config );
 
       }
 
